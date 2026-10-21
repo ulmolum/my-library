@@ -1,4 +1,4 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>내 서재 v1.3.6</title><style>body{margin:0;background:#f4f6fa;font:16px system-ui,sans-serif;color:#182638}main{max-width:650px;margin:auto;padding:16px}.card{background:#fff;border-radius:14px;padding:16px;margin:12px 0}#reader{width:100%;min-height:100px}button{border:0;background:#245bd6;color:#fff;padding:11px 13px;border-radius:8px;margin:4px 3px;font-size:14px}button.alt{background:#e5ebf4;color:#172f53}input{box-sizing:border-box;max-width:100%;padding:11px;font-size:16px}input[type=text]{width:100%;border:1px solid #c6cfda;border-radius:7px}input[type=file]{width:100%}label{display:block;margin:10px 0 4px}small,.muted{color:#566578}li{margin:12px 0;border-bottom:1px solid #eee;padding-bottom:12px}textarea{font:inherit;border:1px solid #c6cfda;border-radius:7px;padding:10px}#status,#detail,#msg{overflow-wrap:anywhere}.book{font-weight:650}h1{font-size:25px}h2{font-size:19px}.card.accordion{padding:0;overflow:hidden}.accordion>summary{cursor:pointer;list-style:none;padding:18px 16px;font-size:19px;font-weight:700;display:flex;justify-content:space-between;align-items:center}.accordion>summary::-webkit-details-marker{display:none}.accordion>summary:after{content:"⌄";font-size:24px;color:#526580}.accordion[open]>summary:after{content:"⌃"}.accordion>summary:focus-visible{outline:3px solid #245bd6;outline-offset:-3px}.accordion-content{padding:0 16px 16px}.accordion[open]>summary{border-bottom:1px solid #e9edf4;margin-bottom:10px}#floatingCapture{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:100;background:#245bd6;color:white;border-radius:999px;box-shadow:0 5px 18px #15284955;padding:15px 24px;font-weight:700;font-size:16px;white-space:nowrap;max-width:calc(100vw - 32px)}#floatingCapture[hidden]{display:none!important}body.list-open main{padding-bottom:110px}#listControls{display:grid;gap:10px;margin:10px 0 14px}#listControls input,#listControls select{width:100%;box-sizing:border-box;padding:10px;border:1px solid #c6cfda;border-radius:8px;background:#fff;font-size:15px}#listControls .controlsRow{display:grid;grid-template-columns:1fr 1fr;gap:8px}#pageControls{display:flex;align-items:center;justify-content:center;gap:10px;margin:16px 0}#pageControls button:disabled{opacity:.4;cursor:default}#listEmpty{color:#566578;padding:18px 0;text-align:center}#list li .muted{overflow-wrap:anywhere}#floatingActions{position:fixed;z-index:100;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;gap:8px;align-items:center;justify-content:center;width:max-content;max-width:calc(100vw - 24px)}#floatingActions[hidden]{display:none!important}#floatingActions button{position:static;transform:none;margin:0;border-radius:999px;box-shadow:0 5px 18px #15284955;padding:14px 16px;font-size:14px;font-weight:700;white-space:nowrap;max-width:none}#floatingIsbn{background:#fff!important;color:#245bd6!important;border:2px solid #245bd6!important}body.list-open main{padding-bottom:130px}@media(max-width:360px){#floatingActions button{font-size:12px;padding:13px 10px}} .error-message{color:#c62828!important;font-weight:600} </style></head><body><main><h1>📚 내 서재 v1.3.6</h1><p class="muted">카메라 촬영 → ISBN 인식 → 도서 정보 자동 조회 → 목록 저장</p><details id="panelScan" class="card accordion" open><summary>ISBN 바코드 인식</summary><div class="accordion-content"><div id="reader" style="display:none"></div><p id="status" role="status">준비 중…</p><p id="detail" class="muted"></p><label for="capture"><b>📷 카메라로 바코드 촬영</b></label><input id="capture" type="file" accept="image/*" capture="environment"><p><small>카메라에서 바코드에 초점을 맞춰 촬영하면 ISBN을 인식하고 도서 정보를 자동 조회합니다.</small></p><label for="manualIsbn"><b>⌨️ ISBN 직접 입력해서 조회하기</b></label><input id="manualIsbn" type="text" inputmode="numeric" maxlength="17" autocomplete="off" placeholder="ISBN-13 숫자 13자리"><button id="manualLookup" type="button">ISBN 조회하기</button><p><small>바코드 촬영이 어려울 때 ISBN을 입력해 조회할 수 있습니다.</small></p></div></details><details id="panelInfo" class="card accordion"><summary>도서 정보</summary><div class="accordion-content"><label for="isbn">ISBN (자동 입력)</label><input id="isbn" type="text" inputmode="numeric" placeholder="바코드 촬영 또는 직접 조회 시 자동 입력" readonly><p id="msg" role="status"></p><button id="enableEdit" type="button" class="alt" hidden>기존 도서 정보 수정</button><label for="title">도서명</label><input id="title" type="text" placeholder="검색 실패 시 직접 입력"><label for="authors">지은이</label><input id="authors" type="text"><label for="translators">옮긴이 (선택)</label><input id="translators" type="text"><label for="publisher">출판사</label><input id="publisher" type="text"><label for="published">출판일</label><input id="published" type="text" placeholder="YYYY-MM-DD 또는 YYYY"><label for="price">정가 (원)</label><input id="price" type="text" inputmode="numeric"><label for="cover">표지 이미지 URL</label><input id="cover" type="text"><img id="coverPreview" alt="도서 표지" style="display:none;max-height:180px;max-width:130px;margin-top:8px" referrerpolicy="no-referrer"><label for="description">도서 소개</label><textarea id="description" style="width:100%;min-height:80px;box-sizing:border-box"></textarea><label for="location">보관 위치 (선택)</label><input id="location" type="text" placeholder="예: 거실 책장"><button id="save">이 도서 저장</button><button id="reset" class="alt">입력 초기화</button><p><small>도서 정보는 알라딘 API 중계 서버에서 조회합니다. 조회 후 제목 확인할 수 있습니다.</small></p></div></details><details id="panelList" class="card accordion"><summary>내 도서 목록 (<span id="count">0</span>권)</summary><div class="accordion-content"><div id="listControls"><label for="bookSearch">도서 검색</label><input id="bookSearch" type="search" placeholder="도서명, 지은이, 옮긴이, 출판사, ISBN"><div class="controlsRow"><select id="bookSort" aria-label="도서 정렬"><option value="new">최신 등록순</option><option value="old">오래된 등록순</option><option value="title">도서명순</option></select><select id="pageSize" aria-label="페이지당 도서 수"><option value="10">10권씩 보기</option><option value="20">20권씩 보기</option><option value="50">50권씩 보기</option></select></div><small id="listResultCount" aria-live="polite"></small></div><ul id="list"></ul><p id="listEmpty" hidden>표시할 도서가 없습니다.</p><div id="pageControls"><button id="prevPage" class="alt" type="button">이전</button><span id="pageLabel" aria-live="polite"></span><button id="nextPage" class="alt" type="button">다음</button></div><button id="csv">엑셀용 CSV 백업</button><button id="xlsx">📗 표지 포함 엑셀(.xlsx) 저장</button><p id="xlsxMsg" role="status" class="muted"></p><label for="importCsv"><b>CSV 백업 가져오기</b></label><input id="importCsv" type="file" accept=".csv,text/csv"><p id="importMsg" role="status"></p><button id="clear" class="alt">전체 삭제</button><p><small>기존 버전의 도서 목록은 첫 실행 시 가져옵니다. 정보는 이 브라우저의 로컬 저장소에 보관됩니다. 브라우저 데이터 삭제·기기 변경에 대비해 CSV를 정기적으로 백업하세요. CSV는 데이터 복원용 백업이며, XLSX는 표지 이미지와 함께 보는 용도입니다. XLSX 파일은 현재 CSV 가져오기로 복원할 수 없습니다.</small></p></div></details></main><div id="floatingActions" hidden>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>내 서재 v1.3.7</title><style>body{margin:0;background:#f4f6fa;font:16px system-ui,sans-serif;color:#182638}main{max-width:650px;margin:auto;padding:16px}.card{background:#fff;border-radius:14px;padding:16px;margin:12px 0}#reader{width:100%;min-height:100px}button{border:0;background:#245bd6;color:#fff;padding:11px 13px;border-radius:8px;margin:4px 3px;font-size:14px}button.alt{background:#e5ebf4;color:#172f53}input{box-sizing:border-box;max-width:100%;padding:11px;font-size:16px}input[type=text]{width:100%;border:1px solid #c6cfda;border-radius:7px}input[type=file]{width:100%}label{display:block;margin:10px 0 4px}small,.muted{color:#566578}li{margin:12px 0;border-bottom:1px solid #eee;padding-bottom:12px}textarea{font:inherit;border:1px solid #c6cfda;border-radius:7px;padding:10px}#status,#detail,#msg{overflow-wrap:anywhere}.book{font-weight:650}h1{font-size:25px}h2{font-size:19px}.card.accordion{padding:0;overflow:hidden}.accordion>summary{cursor:pointer;list-style:none;padding:18px 16px;font-size:19px;font-weight:700;display:flex;justify-content:space-between;align-items:center}.accordion>summary::-webkit-details-marker{display:none}.accordion>summary:after{content:"⌄";font-size:24px;color:#526580}.accordion[open]>summary:after{content:"⌃"}.accordion>summary:focus-visible{outline:3px solid #245bd6;outline-offset:-3px}.accordion-content{padding:0 16px 16px}.accordion[open]>summary{border-bottom:1px solid #e9edf4;margin-bottom:10px}#floatingCapture{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:100;background:#245bd6;color:white;border-radius:999px;box-shadow:0 5px 18px #15284955;padding:15px 24px;font-weight:700;font-size:16px;white-space:nowrap;max-width:calc(100vw - 32px)}#floatingCapture[hidden]{display:none!important}body.list-open main{padding-bottom:110px}#listControls{display:grid;gap:10px;margin:10px 0 14px}#listControls input,#listControls select{width:100%;box-sizing:border-box;padding:10px;border:1px solid #c6cfda;border-radius:8px;background:#fff;font-size:15px}#listControls .controlsRow{display:grid;grid-template-columns:1fr 1fr;gap:8px}#pageControls{display:flex;align-items:center;justify-content:center;gap:10px;margin:16px 0}#pageControls button:disabled{opacity:.4;cursor:default}#listEmpty{color:#566578;padding:18px 0;text-align:center}#list li .muted{overflow-wrap:anywhere}#floatingActions{position:fixed;z-index:100;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;gap:8px;align-items:center;justify-content:center;width:max-content;max-width:calc(100vw - 24px)}#floatingActions[hidden]{display:none!important}#floatingActions button{position:static;transform:none;margin:0;border-radius:999px;box-shadow:0 5px 18px #15284955;padding:14px 16px;font-size:14px;font-weight:700;white-space:nowrap;max-width:none}#floatingIsbn{background:#fff!important;color:#245bd6!important;border:2px solid #245bd6!important}body.list-open main{padding-bottom:130px}@media(max-width:360px){#floatingActions button{font-size:12px;padding:13px 10px}} .error-message{color:#c62828!important;font-weight:600} </style></head><body><main><h1>📚 내 서재 v1.3.7</h1><p class="muted">카메라 촬영 → ISBN 인식 → 도서 정보 자동 조회 → 목록 저장</p><details id="panelScan" class="card accordion" open><summary>ISBN 바코드 인식</summary><div class="accordion-content"><div id="reader" style="display:none"></div><p id="status" role="status">준비 중…</p><p id="detail" class="muted"></p><label for="capture"><b>📷 카메라로 바코드 촬영</b></label><input id="capture" type="file" accept="image/*" capture="environment"><p><small>카메라에서 바코드에 초점을 맞춰 촬영하면 ISBN을 인식하고 도서 정보를 자동 조회합니다.</small></p><label for="manualIsbn"><b>⌨️ ISBN 직접 입력해서 조회하기</b></label><input id="manualIsbn" type="text" inputmode="numeric" maxlength="17" autocomplete="off" placeholder="ISBN-13 숫자 13자리"><button id="manualLookup" type="button">ISBN 조회하기</button><p><small>바코드 촬영이 어려울 때 ISBN을 입력해 조회할 수 있습니다.</small></p></div></details><details id="panelInfo" class="card accordion"><summary>도서 정보</summary><div class="accordion-content"><label for="isbn">ISBN (자동 입력)</label><input id="isbn" type="text" inputmode="numeric" placeholder="바코드 촬영 또는 직접 조회 시 자동 입력" readonly><p id="msg" role="status"></p><label for="title">도서명</label><input id="title" type="text" placeholder="검색 실패 시 직접 입력"><label for="authors">지은이</label><input id="authors" type="text"><label for="translators">옮긴이 (선택)</label><input id="translators" type="text"><label for="publisher">출판사</label><input id="publisher" type="text"><label for="published">출판일</label><input id="published" type="text" placeholder="YYYY-MM-DD 또는 YYYY"><label for="price">정가 (원)</label><input id="price" type="text" inputmode="numeric"><label for="cover">표지 이미지 URL</label><input id="cover" type="text"><img id="coverPreview" alt="도서 표지" style="display:none;max-height:180px;max-width:130px;margin-top:8px" referrerpolicy="no-referrer"><label for="description">도서 소개</label><textarea id="description" style="width:100%;min-height:80px;box-sizing:border-box"></textarea><label for="location">보관 위치 (선택)</label><input id="location" type="text" placeholder="예: 거실 책장"><button id="save">이 도서 저장</button><button id="reset" class="alt">입력 초기화</button><p><small>도서 정보는 알라딘 API 중계 서버에서 조회합니다. 조회 후 제목 확인할 수 있습니다.</small></p></div></details><details id="panelList" class="card accordion"><summary>내 도서 목록 (<span id="count">0</span>권)</summary><div class="accordion-content"><div id="listControls"><label for="bookSearch">도서 검색</label><input id="bookSearch" type="search" placeholder="도서명, 지은이, 옮긴이, 출판사, ISBN"><div class="controlsRow"><select id="bookSort" aria-label="도서 정렬"><option value="new">최신 등록순</option><option value="old">오래된 등록순</option><option value="title">도서명순</option></select><select id="pageSize" aria-label="페이지당 도서 수"><option value="10">10권씩 보기</option><option value="20">20권씩 보기</option><option value="50">50권씩 보기</option></select></div><small id="listResultCount" aria-live="polite"></small></div><ul id="list"></ul><p id="listEmpty" hidden>표시할 도서가 없습니다.</p><div id="pageControls"><button id="prevPage" class="alt" type="button">이전</button><span id="pageLabel" aria-live="polite"></span><button id="nextPage" class="alt" type="button">다음</button></div><button id="csv">엑셀용 CSV 백업</button><button id="xlsx">📗 표지 포함 엑셀(.xlsx) 저장</button><p id="xlsxMsg" role="status" class="muted"></p><label for="importCsv"><b>CSV 백업 가져오기</b></label><input id="importCsv" type="file" accept=".csv,text/csv"><p id="importMsg" role="status"></p><button id="clear" class="alt">전체 삭제</button><p><small>기존 버전의 도서 목록은 첫 실행 시 가져옵니다. 정보는 이 브라우저의 로컬 저장소에 보관됩니다. 브라우저 데이터 삭제·기기 변경에 대비해 CSV를 정기적으로 백업하세요. CSV는 데이터 복원용 백업이며, XLSX는 표지 이미지와 함께 보는 용도입니다. XLSX 파일은 현재 CSV 가져오기로 복원할 수 없습니다.</small></p></div></details></main><div id="floatingActions" hidden>
 <button id="floatingCapture" type="button">📷 새 도서 촬영</button>
 <button id="floatingIsbn" type="button">⌨️ ISBN 직접 입력</button>
 </div><script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script><script>
@@ -47,7 +47,7 @@ function render(){
  for(const {book:b} of filtered.slice((listPage-1)*size,listPage*size)){
   const li=document.createElement('li'),heading=document.createElement('div');heading.className='book';heading.textContent=b.title||'(도서명 미입력)';li.append(heading);
   const meta=document.createElement('div');meta.className='muted';meta.textContent=[b.isbn,b.authors&&'지은이: '+b.authors,b.translators&&'옮긴이: '+b.translators,b.publisher,b.published,b.location].filter(Boolean).join(' · ');li.append(meta);
-  const edit=document.createElement('button');edit.className='alt';edit.textContent='수정';edit.onclick=()=>{editingIsbn=b.isbn;$('enableEdit').hidden=true;setFields(b);$('msg').textContent='기존 도서 수정 중 · 내용을 변경한 뒤 「이 도서 저장」을 눌러주세요.';showPanel('panelInfo')};
+  const edit=document.createElement('button');edit.className='alt';edit.textContent='수정';edit.onclick=()=>{editingIsbn=b.isbn;setFields(b);$('msg').textContent='기존 도서 수정 중 · 내용을 변경한 뒤 「이 도서 저장」을 눌러주세요.';showPanel('panelInfo')};
   const del=document.createElement('button');del.className='alt';del.textContent='삭제';del.onclick=()=>{if(confirm('이 도서를 삭제할까요?')){books=books.filter(x=>x.isbn!==b.isbn);persist()}};
   li.append(edit,del);$('list').append(li);
  }
@@ -72,20 +72,12 @@ function parseContributors(raw){
 async function lookup(){
  const s=isbn(),token=++lookupToken;
  if(!valid(s)){$('msg').textContent='유효한 ISBN-13을 입력해 주세요.';return false}
- const old=books.find(b=>b.isbn===s);
- if(old){
-  setFields(old);
-  if(editingIsbn!==s){
-   editingIsbn=null;
-   $('enableEdit').hidden=false;
-   $('msg').textContent='이미 등록된 도서입니다. 기존 정보가 표시됩니다. 수정하려면 「기존 도서 정보 수정」을 눌러주세요.';
-  }else{
-   $('enableEdit').hidden=true;
-   $('msg').textContent='기존 도서 수정 중 · 내용을 변경한 뒤 저장해 주세요.';
+  if(books.some(b=>b.isbn===s)){
+   $('status').textContent='이미 등록된 도서입니다. 내 도서 목록에서 수정할 수 있습니다.';
+   showPanel('panelScan');
+   return false;
   }
-  return true;
- }
- editingIsbn=null;$('enableEdit').hidden=true;
+  editingIsbn=null;
  $('msg').textContent='알라딘에서 도서 정보를 조회하는 중…';
  try{
   const r=await fetch(API+'?isbn='+encodeURIComponent(s),{headers:{Accept:'application/json'}});
@@ -105,19 +97,24 @@ async function lookup(){
   updateCover();
   $('msg').textContent='도서 정보 조회 성공! 내용을 확인한 뒤 「이 도서 저장」을 눌러주세요.';
   return true;
- }catch(e){if(token!==lookupToken)return false;$('msg').textContent='조회 실패: '+e.message+' · 직접 입력해 저장할 수 있습니다.';return false}
+ }catch(e){if(token!==lookupToken)return false;$('msg').textContent='조회 실패: '+e.message;return false}
 }
 async function recognized(raw){
  const s=String(raw).replace(/\D/g,'');
  $('detail').textContent='감지된 바코드: '+raw;
  if(s===last)return;
  if(!valid(s)){$('status').textContent='바코드를 감지했지만 유효한 ISBN-13이 아닙니다.';return}
+ if(books.some(b=>b.isbn===s)){
+  ++lookupToken;
+  $('status').textContent='이미 등록된 도서입니다. 내 도서 목록에서 수정할 수 있습니다.';
+  showPanel('panelScan');return;
+ }
  last=s;setTimeout(()=>{if(last===s)last=''},2500);
  $('status').textContent='ISBN 인식 성공 · 도서 정보 조회 중';
- editingIsbn=null; $('enableEdit').hidden=true;
- setFields({});$('isbn').value=s;
- showPanel('panelInfo');
- lookup();
+ editingIsbn=null;setFields({});$('isbn').value=s;
+ const ok=await lookup();
+ if(ok){$('status').textContent='ISBN 조회 성공 · 도서 정보가 표시됩니다.';showPanel('panelInfo')}
+ else{const err=$('msg').textContent;if(err)$('status').textContent=err;$('msg').textContent='';showPanel('panelScan')}
 }
 $('manualLookup').onclick=async()=>{
  const input=$('manualIsbn');
@@ -127,7 +124,12 @@ $('manualLookup').onclick=async()=>{
   input.focus();
   return;
  }
- ++lookupToken;editingIsbn=null;$('enableEdit').hidden=true;
+ if(books.some(b=>b.isbn===value)){
+  ++lookupToken;
+  $('status').textContent='이미 등록된 도서입니다. 내 도서 목록에서 수정할 수 있습니다.';
+  showPanel('panelScan');input.focus();return;
+ }
+ ++lookupToken;editingIsbn=null;
  setFields({});$('isbn').value=value;
  $('status').textContent='ISBN '+value+' 도서 정보를 조회하는 중…';
  $('manualLookup').disabled=true;
@@ -145,20 +147,18 @@ $('manualLookup').onclick=async()=>{
  }
 };
 $('manualIsbn').addEventListener('keydown',e=>{if(e.key==='Enter'){$('manualLookup').click()}});
-$('enableEdit').onclick=()=>{const s=isbn(),old=books.find(b=>b.isbn===s);if(!old)return;editingIsbn=s;$('enableEdit').hidden=true;setFields(old);$('msg').textContent='기존 도서 수정 중 · 내용을 변경한 뒤 「이 도서 저장」을 눌러주세요.'};
 $('save').onclick=()=>{
  const b=getFields();if(!valid(b.isbn)){$('msg').textContent='유효한 ISBN-13이 아닙니다.';return}
  const idx=books.findIndex(x=>x.isbn===b.isbn);
  if(idx>=0&&editingIsbn!==b.isbn){
-  setFields(books[idx]);$('enableEdit').hidden=false;
-  $('msg').textContent='이미 등록된 도서입니다. 기존 정보를 보호하기 위해 저장하지 않았습니다. 수정하려면 「기존 도서 정보 수정」을 눌러주세요.';return;
+  $('msg').textContent='이미 등록된 도서입니다. 내 도서 목록에서 수정할 수 있습니다.';showPanel('panelScan');$('status').textContent=$('msg').textContent;return;
  }
  if(editingIsbn&&editingIsbn!==b.isbn){$('msg').textContent='수정 중에는 ISBN을 변경할 수 없습니다. 기존 ISBN으로 저장하거나 입력 초기화 후 새 도서로 등록해 주세요.';return}
  b.added=idx>=0?books[idx].added:new Date().toISOString().slice(0,10);
  if(idx>=0)books[idx]=b;else books.push(b);
- editingIsbn=null;$('enableEdit').hidden=true;if(idx<0){$('bookSearch').value='';$('bookSort').value='new';listPage=1}persist();$('msg').textContent='저장 완료: '+(b.title||b.isbn);showPanel('panelList');if(idx<0)requestAnimationFrame(()=>requestAnimationFrame(()=>$('listControls').scrollIntoView({behavior:'smooth',block:'start'})))
+ editingIsbn=null;if(idx<0){$('bookSearch').value='';$('bookSort').value='new';listPage=1}persist();$('msg').textContent='저장 완료: '+(b.title||b.isbn);showPanel('panelList');if(idx<0)requestAnimationFrame(()=>requestAnimationFrame(()=>$('listControls').scrollIntoView({behavior:'smooth',block:'start'})))
 };
-$('reset').onclick=()=>{++lookupToken;editingIsbn=null;$('enableEdit').hidden=true;setFields({});$('msg').textContent=''};
+$('reset').onclick=()=>{++lookupToken;editingIsbn=null;setFields({});$('msg').textContent=''};
 async function scanSelectedPhoto(e){
  const f=e.target.files?.[0];if(!f)return;
  if(!window.Html5Qrcode){$('status').textContent='스캐너 라이브러리 로드 실패';return}
@@ -292,7 +292,7 @@ $('importCsv').onchange=async e=>{
  finally{e.target.value=''}
 };
 // 오류 안내는 위치와 관계없이 빨간색으로 표시하고, 정상 안내는 기본색을 유지합니다.
-const errorMessagePattern=/(?:^|[\s:·])(?:조회 실패|생성 실패|가져오기 실패|로드 실패|응답 오류|오류|실패|유효한 ISBN|유효하지|찾지 못했|불러오지 못했|연결할 수 없|바코드를 찾지 못했|ISBN을 변경할 수 없|저장하지 않았|누락)(?:[\s:·]|$)|^사진에서 바코드를 찾지 못했습니다|^바코드를 감지했지만/;
+const errorMessagePattern=/(?:^|[\s:·])(?:이미 등록된 도서입니다)|(?:^|[\s:·])(?:조회 실패|생성 실패|가져오기 실패|로드 실패|응답 오류|오류|실패|유효한 ISBN|유효하지|찾지 못했|불러오지 못했|연결할 수 없|바코드를 찾지 못했|ISBN을 변경할 수 없|저장하지 않았|누락)(?:[\s:·]|$)|^사진에서 바코드를 찾지 못했습니다|^바코드를 감지했지만/;
 for(const id of ['status','detail','msg','xlsxMsg','importMsg']){
  const node=$(id);
  const update=()=>node.classList.toggle('error-message',errorMessagePattern.test(node.textContent.trim()));
